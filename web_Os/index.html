@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JuniorOS</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: rgb(0, 0, 0);
+            font-family: Arial, sans-serif;
+        }
+
+        /* Canvas pro svítivou vodu */
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* Úvodní obrazovka */
+        #welcomeScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: rgb(54, 185, 54);
+        }
+
+        #welcomeContent {
+            width: 100%;
+            transition: transform 1.2s ease, opacity 1.2s ease;
+        }
+
+        /* Přiblížení a zmizení úvodního textu */
+        #welcomeContent.zoom-out {
+            transform: scale(8);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Skrytí úvodní obrazovky */
+        #welcomeScreen.hidden {
+            display: none;
+        }
+
+        /* Desktop OS */
+        #desktop {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background-color: #101820;
+            background-image:
+                radial-gradient(circle at center, #203b4a 0%, #101820 75%);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Spodní taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.25);
+            color: #fff;
+            backdrop-filter: blur(50px);
+            height: 50px;
+            z-index: 10;
+        }
+
+        .taskbar p {
+            margin: 0 16px;
+        }
+
+        /* Klikací text OS */
+        #osButton {
+            cursor: pointer;
+            transition: text-shadow 0.3s ease;
+        }
+
+        /* Text OS a čas v pravém dolním rohu */
+        #osControls {
+            position: fixed;
+            right: 20px;
+            bottom: 65px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: aqua;
+            z-index: 11;
+        }
+
+        #osButtonDesktop {
+            cursor: pointer;
+            transition: text-shadow 0.3s ease;
+        }
+
+        /* Sociální sítě */
+        .socials {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+        }
+
+        .socials.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        /* Přiblížení jména */
+        #myName {
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        #myName.zoomed {
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Canvas pro efekt svítivé vody -->
+    <canvas id="fireworks"></canvas>
+
+    <!-- Úvodní obrazovka -->
+    <div id="welcomeScreen">
+        <div id="welcomeContent">
+
+            <h1 style="color: aqua;">
+                <span id="welcomeButton" style="cursor: pointer;">
+                    Welcome
+                </span>
+                to my OS
+            </h1>
+
+            <p>
+                My name is
+                <strong id="myName" style="color: #0E91DD; cursor: pointer;">
+                    Daniel
+                </strong>
+                and today I will walk you through my OS.
+            </p>
+
+            <div class="socials" id="socials">
+                <p>My socials:</p>
+
+                <nav>
+                    <a href="https://www.instagram.com/direct/t/103755687694980/"
+                       style="color: #BE392D;">
+                        Instagram
+                    </a>
+                    <br>
+
+                    <a href="https://www.facebook.com/"
+                       style="color: #BE392D;">
+                        Facebook
+                    </a>
+                    <br>
+
+                    <a href="https://x.com/"
+                       style="color: #BE392D;">
+                        Twitter
+                    </a>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="desktop" class="hidden">
+        <div class="desktop-icons">
+
+            <div class="desktop-icon" data-app="about">
+                <div class="app-icon">👤</div>
+                <span>About me</span>
+            </div>
+
+        
+            <div class="desktop-icon" data-app="projects">
+                <div class="app-icon">📁</div>
+                <span>My projects</span>
+            </div>
+
+            <div class="desktop-icon" data-app="notebook">
+                <div class="app-icon">📓</div>
+                <span>notebook</span>
+            </div>
+
+            <div class="desktop-icon" data-app="settings">
+                <div class="app-icon">⚙️</div>
+                <span>settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spodní taskbar -->
+    <div class="taskbar">
+        <p>JuniorOS</p>
+        <p id="timeElement">Loading Time...</p>
+        <p>Version 1.0</p>
+    </div>
+
+    <!-- Ovládání OS v pravém dolním rohu -->
+    <div id="osControls">
+        <strong id="osButtonDesktop">OS</strong>
+    </div>
+
+    <!-- Aktualizace času -->
+    <script>
+        function updateTime() {
+            const timeText = document.getElementById("timeElement");
+
+            if (timeText) {
+                timeText.textContent = new Date().toLocaleString("cs-CZ");
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+
+    <!-- JavaScript -->
+    <script src="script.js" defer></script>
+    <script src="fireworks.js" defer></script>
+
+</body>
+</html>

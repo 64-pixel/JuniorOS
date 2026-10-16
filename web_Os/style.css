@@ -1,0 +1,383 @@
+
+/* Jméno Daniel */
+#myName {
+    color: #0E91DD;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.4s ease;
+}
+
+#myName.zoomed {
+    transform: scale(1.3);
+}
+
+/* Sociální sítě */
+.socials {
+    opacity: 0;
+    transform: scale(0.5);
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: opacity 0.5s ease, transform 0.5s ease,
+                max-height 0.5s ease;
+}
+
+.socials.show {
+    opacity: 1;
+    transform: scale(1);
+    max-height: 200px;
+    visibility: visible;
+}
+
+/* Canvas se svítivou vodou */
+#fireworks {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Úvodní obrazovka */
+#welcomeScreen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgb(54, 185, 54);
+    z-index: 5;
+}
+
+/* Obsah úvodní obrazovky */
+#welcomeContent {
+    width: 100%;
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+    transition: transform 1.8s cubic-bezier(0.16,1,0.3,1), opacity 1.8s ease-in, filter 1.8s ease-in;
+}
+
+/* Animace přiblížení a zmizení */
+#welcomeContent.zoom-out {
+    transform: scale(3.5);
+    opacity: 0;
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+/* Skrytí úvodní obrazovky */
+#welcomeScreen.hidden {
+    display: none;
+}
+
+/* Desktop */
+#desktop {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background-color: #101820;
+    background-image: radial-gradient(
+        circle at center,
+        #203b4a 0%,
+        #101820 75%
+    );
+}
+
+/* Univerzální skrytí */
+.hidden {
+    display: none !important;
+}
+
+/* Spodní taskbar */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(50px);
+    z-index: 10;
+}
+
+.taskbar p {
+    margin: 0 16px;
+}
+
+/* Ovládání OS */
+#osControls {
+    position: fixed;
+    right: 20px;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: aqua;
+    z-index: 11;
+}
+
+/* Klikací text OS */
+#osButtonDesktop {
+    cursor: pointer;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    z-index: 20;
+    pointer-events: auto;
+    user-select: none;
+
+}
+#osButtonDesktop.active{
+    color: #00ffcc;
+    text-shadow: 0 0 12px #00ffcc;
+}
+
+/* Klikací Welcome */
+#welcomeButton {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
+}
+
+.desktop-icons{
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    display: grid;
+    grid-template-columns: repeat(2,95px);
+    gap: 25px 15px;
+}
+.desktop-icon{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 5px;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    user-select: none;
+}
+
+.desktop-icon:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.app-icon {
+    font-size: 38px;
+}
+
+/* Okno aplikace */
+.app-window {
+    position: absolute;
+    top: 80px;
+    left: 100px;
+    width: min(600px, calc(100vw - 32px));
+    max-height: calc(100vh - 90px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: #17232d;
+    color: white;
+    border: 1px solid #3b596b;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    z-index: 5;
+}
+
+.window-header {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    gap:12px;
+    padding: 12px 16px;
+    background: #203b4a;
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    touch-action:none;
+}
+
+#closeWindow {
+    color: white;
+    background: #b83232;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.window-content {
+    padding: 22px;
+    line-height: 1.6;
+    min-height:0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.window-header:active{
+    cursor: grabbing;
+}
+.window-header{
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+.window-header:active{
+    cursor: grabbing;
+}
+
+.close-window{
+    flex-shrink:0;
+    color: white;
+    background: #b83232;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.close-window:hover{
+    background: #e04444;
+}
+
+.notebook-app{
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.notebook-app p{
+    margin: 0;
+}
+.notebook-editor {
+    width: 100%;
+    min-height: 220 px;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 14px;
+    border: 1px solid #3b596b;
+    border-radius: 8px;
+    outline: none;
+    background: #101820;
+    color: #e8f5ff;
+    font-family: Consolas,monospace;
+    font-size: 14px;
+    line-height:1.6;
+}
+.notebook-editor:focus{
+    border-color: #00d9ff;
+    box-shadow: 0 0 8px rgba(0, 217, 255, 0.2);
+}
+.notebook-status{
+    color: #70e6c1;
+    font-size:12px;
+}
+
+.settings-app{
+    display:flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 260px;
+}
+.settings-app h2{
+    margin: 0;
+    color:#00d9ff;
+}
+
+.settings-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid #ffffff20;
+    border-radius: 10px;
+    background: #ffffff06;
+}
+.settings-section h3{
+    margin: 0 0 4px;
+    font-size: 15px;
+}
+.settings-app input[type="color"]{
+    width: 100%;
+    height: 40px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.settings-app input[type="datetime-local"],
+.settings-app select{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px;
+    border: 1px solid #506575;
+    border-radius: 6px;
+    background: #101820;
+    color: #ffffff;
+}
+.settings-checkbox{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+}
+.settings-checkbox input{
+    accent-color: #00d9ff;
+}
+
+.theme-presets{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+.settings-app button {
+    padding: 8px 12px;
+    border: 1px solid #00bde0;
+    border-radius: 6px;
+    background: #15313e;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.settings-app button:hover{
+    background: #205064;
+}
+.settings-hint,
+.settings-status{
+    margin:0;
+    font-size: 12px;
+    opacity: 0.75;
+}
+.settings-status{
+    color: #70e6c1;
+}
+
+:root[data-junior-theme="light"] .app-window{
+    background: #f1f5f9;
+    color: #17212b;
+    border-color: #b9c9d5;
+}
+:root[data-junior-theme="light"] .window-header{
+    background: #dce8f0;
+    color: #17212b;
+}
+:root[data-junior-theme="light"] .settings-section{
+    background: #00000006;
+    border-color: #00000020;
+}
+:root[data-junior-theme="light"] .settings-app input[type="datetime-local"],
+:root[data-junior-theme="light"] .settings-app select {
+    background: #ffffff;
+    color: #17212b;
+}
